@@ -8,18 +8,22 @@ import org.springframework.http.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+
+import br.com.alura.AluraFake.course.CourseService;
 import java.util.*;
 
 @RestController
 public class CourseController {
 
     private final CourseRepository courseRepository;
+    private final CourseService courseService;
     private final UserRepository userRepository;
 
     @Autowired
-    public CourseController(CourseRepository courseRepository, UserRepository userRepository){
+    public CourseController(CourseRepository courseRepository, UserRepository userRepository, CourseService courseService) {
         this.courseRepository = courseRepository;
         this.userRepository = userRepository;
+        this.courseService = courseService;
     }
 
     @Transactional
@@ -52,7 +56,12 @@ public class CourseController {
 
     @PostMapping("/course/{id}/publish")
     public ResponseEntity createCourse(@PathVariable("id") Long id) {
-        return ResponseEntity.ok().build();
+        if (!courseRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+        Course course = courseService.getCourseById(id);
+        courseService.publishCourse(id);
+        return ResponseEntity.ok(new CourseListItemDTO(course));
     }
 
 }

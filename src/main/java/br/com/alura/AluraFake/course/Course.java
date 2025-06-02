@@ -78,4 +78,25 @@ public class Course {
         task.setCourse(null);
         this.tasks.remove(task);
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setPublishedAt(LocalDateTime now) {
+        this.publishedAt = now;
+    }
+
+    public List<Task> getTasks() {
+        return this.tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        if (tasks == null) {
+            this.tasks = new ArrayList<>();
+        } else {
+            this.tasks = tasks;
+        }
+        
+    }
 }
