@@ -10,52 +10,56 @@ import br.com.alura.AluraFake.course.CourseRepository;
 @RequestMapping("/task")
 public class TaskController {
 
-    private final TaskRepository taskRepository;
+    private final TaskService taskService;
     private final CourseRepository courseRepository;
 
     @Autowired
-    public TaskController(TaskRepository taskRepository, CourseRepository courseRepository) {
-        this.taskRepository = taskRepository;
+    public TaskController(TaskService taskService, CourseRepository courseRepository) {
+        this.taskService = taskService;
         this.courseRepository = courseRepository;
     }
 
     @PostMapping("/new/opentext")
     public ResponseEntity<?> newOpenTextExercise(@RequestBody OpenText task) {
         task.setType("open_text");
-        taskRepository.save(task);
+        taskService.createOpenTextTask(task);
         return ResponseEntity.ok(task);
     }
 
     @PostMapping("/new/singlechoice")
     public ResponseEntity<?> newSingleChoice(@RequestBody SingleChoice task) {
         task.setType("single_choice");
-        taskRepository.save(task);
+        System.out.println("Received task: " + task);
+        taskService.createSingleChoiceTask(task);
         return ResponseEntity.ok(task);
     }
 
     @PostMapping("/new/multiplechoice")
     public ResponseEntity<?> newMultipleChoice(@RequestBody MultipleChoice task) {
         task.setType("multiple_choice");
-        taskRepository.save(task);
+        taskService.createMultipleChoiceTask(task);
         return ResponseEntity.ok(task);
     }
 
     @GetMapping
     public ResponseEntity<?> getAllTasks() {
-        return ResponseEntity.ok(taskRepository.findAll());
+        return ResponseEntity.ok(taskService.getAllTasks());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTaskById(@PathVariable Long id) {
-        return taskRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Task task = taskService.getTaskById(id);
+        if (task == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(task);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable Long id) {
-        if (taskRepository.existsById(id)) {
-            taskRepository.deleteById(id);
+        if (taskService.existsById(id)) {
+            taskService.deleteTask(id);
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();

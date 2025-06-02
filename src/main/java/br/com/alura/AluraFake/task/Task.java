@@ -50,6 +50,9 @@ public abstract class Task {
         this.course = course;
     }
 
+    public Task() {
+    }
+
     public Type getTaskType() {
         return taskType;
     }
