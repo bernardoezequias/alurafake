@@ -79,10 +79,6 @@ public class Course {
         this.tasks.remove(task);
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public void setPublishedAt(LocalDateTime now) {
         this.publishedAt = now;
     }

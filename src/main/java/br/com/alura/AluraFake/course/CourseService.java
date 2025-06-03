@@ -46,14 +46,6 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
-    public Course updateCourse(Long id, Course course) {
-        if (!courseRepository.existsById(id)) {
-            throw new IllegalArgumentException("Course not found with id: " + id);
-        }
-        course.setId(id);
-        return courseRepository.save(course);
-    }
-
     @Transactional
     public void publishCourse(Long id) {
         Course course = getCourseById(id);
