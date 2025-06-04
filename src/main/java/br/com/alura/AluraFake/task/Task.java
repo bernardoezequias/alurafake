@@ -53,6 +53,10 @@ public abstract class Task {
     public Task() {
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Type getTaskType() {
         return taskType;
     }

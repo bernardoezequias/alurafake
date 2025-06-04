@@ -13,6 +13,10 @@ public class OpenText extends Task {
         super(statement, order, taskType, course);
     }
 
+    public OpenText() {
+        //TODO Auto-generated constructor stub
+    }
+
     public void setType(String type) {
     String formatted = type.toUpperCase().replace("-", "_").replace(" ", "_");
     this.taskType = Type.valueOf(formatted);

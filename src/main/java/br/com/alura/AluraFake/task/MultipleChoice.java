@@ -33,6 +33,10 @@ public class MultipleChoice extends Task {
 
     }
 
+    public MultipleChoice() {
+        //TODO Auto-generated constructor stub
+    }
+
     public List<Option> getOptions() {
         return options;
     }

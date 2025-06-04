@@ -37,8 +37,8 @@ public class Option {
     public boolean isCorrect() {
         return isCorrect;
     }
-    public void setCorrect(boolean correct) {
-        this.isCorrect = correct;
+    public void setCorrect(boolean isCorrect) {
+        this.isCorrect = isCorrect;
     }
 
     @Override

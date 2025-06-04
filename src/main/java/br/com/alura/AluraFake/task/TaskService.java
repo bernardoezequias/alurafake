@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.com.alura.AluraFake.course.Course;
 import br.com.alura.AluraFake.course.CourseRepository;
 
 @Service
@@ -21,12 +22,14 @@ public class TaskService {
 
     public OpenText createOpenTextTask(OpenText task) {
         task.setType("open_text");
+        sortTasksByOrder(task.getCourse(), task);
         return taskRepository.save(task);
     }
 
 
     public SingleChoice createSingleChoiceTask(SingleChoice task) {
         validateSingleChoice(task.getOptions(), task.getStatement());
+        sortTasksByOrder(task.getCourse(), task);
         task.setType("single_choice");
         return taskRepository.save(task);
     }
@@ -34,6 +37,7 @@ public class TaskService {
 
     public MultipleChoice createMultipleChoiceTask(MultipleChoice task) {
         validateMutlitpleChoice(task.getOptions(), task.getStatement());
+        sortTasksByOrder(task.getCourse(), task);
         task.setType("multiple_choice");
         return taskRepository.save(task);
     }
@@ -66,7 +70,6 @@ public class TaskService {
 
 
     private void validateSingleChoice(List<Option> options, String statement) {
-
     if (options.size() < 2 || options.size() > 5) {
         throw new IllegalArgumentException("Options must have between 2 and 5 items.");
     }
@@ -122,10 +125,29 @@ public class TaskService {
             throw new IllegalArgumentException("Each option must be between 4 and 80 characters.");
         }
     }
-}
-
-
-
-
     
+    }
+
+    private void sortTasksByOrder(Course course, Task newTask) {
+        List<Task> tasks = taskRepository.findByCourseIdOrderByOrderAsc(course.getId());
+        int actualSize = tasks.size();
+
+        if (newTask.getOrder() > actualSize + 1) {
+            throw new IllegalArgumentException("Order cannot have breaks between them.");
+        }
+
+        for (Task task: tasks) {
+            if (task.getOrder() >= newTask.getOrder()) {
+                task.setOrder(task.getOrder() + 1);
+                taskRepository.save(task);
+            }
+        }
+
+        taskRepository.save(newTask);
+    }
 }
+
+
+
+
+

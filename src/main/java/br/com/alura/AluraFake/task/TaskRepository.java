@@ -11,5 +11,7 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     List<Task> findByCourseIdAndTaskType(Long courseId, Type taskType);
 
     List<Task> findByCourseIdAndOrder(Long courseId, int order);
+
+    List<Task> findByCourseIdOrderByOrderAsc(Long id);
     
 }
